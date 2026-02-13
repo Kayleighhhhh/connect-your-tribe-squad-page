@@ -33,6 +33,7 @@ a {
     background: #8b6b4a;
     padding: 14px 20px;
     font-size: 16px;
+    width: max-content;
 }
 
 

@@ -1,22 +1,22 @@
 {% render 'partials/head.liquid', title: 'Squad page' %}
 
 <header class="controls">
-  <div class="control">
-    {% if andersom %}
-      <a href="{% if andersom %}/{% else %}/andersom{% endif %}">sort op naam A-Z</a>
-    {% else %}
-      <a href="{% if andersom %}/{% else %}/andersom{% endif %}">sort op naam Z-A</a>
-    {% endif %}
-    </div>
-  <div class="control">
-    {% if jongnoud %}
-      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">sort oud naar jong</a>
-    {% elsif oudnjong %}
-      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">terug</a>
-    {% else %}
-      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">sort jong naar oud</a>
-    {% endif %}
-  </div>
+  
+  {% if andersom %}
+    <a href="/" class="control">sort op naam A-Z</a>
+  {% else %}
+    <a href="/andersom" class="control">sort op naam Z-A</a>
+  {% endif %}
+
+  
+  {% if jongnoud %}
+    <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}" class="control">sort oud naar jong</a>
+  {% elsif oudnjong %}
+    <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}" class="control">terug</a>
+  {% else %}
+    <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}" class="control">sort jong naar oud</a>
+  {% endif %}
+
   <div class="control">zoeken</div>
   <details class="control"><summary>filter op seizoen</summary>
     <a href="/lente">Lente</a>
