@@ -1,10 +1,61 @@
 {% render 'partials/head.liquid', title: 'Squad page' %}
 
-<h2>Students</h2>
-<ul>
+<header class="controls">
+  <div class="control">
+    {% if andersom %}
+      <a href="{% if andersom %}/{% else %}/andersom{% endif %}">sort op naam A-Z</a>
+    {% else %}
+      <a href="{% if andersom %}/{% else %}/andersom{% endif %}">sort op naam Z-A</a>
+    {% endif %}
+    </div>
+  <div class="control">
+    {% if jongnoud %}
+      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">sort oud naar jong</a>
+    {% elsif oudnjong %}
+      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">terug</a>
+    {% else %}
+      <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}">sort jong naar oud</a>
+    {% endif %}
+  </div>
+  <div class="control">zoeken</div>
+  <details class="control"><summary>filter op seizoen</summary>
+    <a href="/lente">Lente</a>
+    <a href="/zomer">Zomer</a>
+    <a href="/herfst">Herfst</a>
+    <a href="/winter">Winter</a>
+  </details>
+</header>
+
+<main class="wall">
   {% for person in persons %}
-    <li><a href="/student/{{ person.id }}">{{ person.name }}</a></li>
+    <article class="poster">
+      <a href="/student/{{ person.id }}">
+    
+        <span class="pin"> {{ person.fav_emoji }}</span>
+
+        <h1>WANTED</h1>
+        <h2>DEAD OR ALIVE</h2>
+
+        <div class="photo">
+
+          {% if person.mugshot %}
+            <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}?width=500" alt="foto van {{ person.name }}">
+          {% else %}
+            <img src="{{ person.avatar }}" alt="foto van {{ person.name }}">
+          {% endif %}
+        
+        </div>
+
+
+        <ul>
+          <li><strong>Naam</strong></a> {{ person.name }}</li>
+          <li><strong>Geboortedatum</strong>{% if person.birthdate == null %} no age{% else %} {{ person.birthdate | date: '%b %d, %Y' }}{% endif %}</li>
+          <li><strong>Woonplaats</strong>{% if person.residency == null %} Ergens op aarde{% else %} {{ person.residency }}{% endif %}</li>
+          <li><strong>Laatst gezien in de</strong> {% if person.fav_season == null %} geen{% else %} {{ person.fav_season }}{% endif %}</li>
+        </ul>
+      </a>
+    </article>
   {% endfor %}
-</ul>
+</main>
 
 {% render 'partials/foot.liquid', squads: squads %}
