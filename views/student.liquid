@@ -2,4 +2,45 @@
 
 <a href="/">Back</a>
 
+{% if liked %}
+  <form method="post" action="/person/{{ person.id }}/unlike">
+    <button type="submit" name="message" value="">Unlike 💔</button>
+  </form>
+{% else %}
+  <form method="post" action="/person/{{ person.id }}/like">
+    <button type="submit">Like ❤️</button>
+  </form>
+{% endif %}
+
+<ul>
+  <li class="d-name">{{ person.name }}</li>
+  <li class="d-bounty">{{ person.id }}.000.000</li>
+  <li class="d-nickname">{{ person.nickname }}</li>
+  <li class="d-github">@{{ person.github_handle }}</li>
+  <li class="d-bio">
+    {% if person.bio %}
+      {{ person.bio | truncate: 240 }}
+    {% else %}
+      <p>Deze persoon is te lui geweest om een bio neer te zetten</p>
+    {% endif %}
+  </li>
+  <li class="d-hobby">{{ person.fav_hobby }}</li>
+  <li class="d-emoji">{{ person.fav_emoji }}</li>
+  <li class="d-season">{{ person.fav_season }}</li>
+  <li class="d-animal">{{ person.fav_animal }}</li>
+  <li class="d-movie">{{ person.fav_movie }}</li>
+</ul>
+
+<div>
+  <h2>Accept bounty?</h2>
+  <form method="post" action="/student/{{ person.id }}">
+    <label>
+      Naam:
+      <input type="text" name="from" required>
+    </label>
+
+    <button type="submit">Accept</button>
+  </form>
+</div>
+
 {% render 'partials/foot.liquid', squads: squads %}

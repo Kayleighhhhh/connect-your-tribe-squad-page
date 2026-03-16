@@ -186,19 +186,54 @@ app.post('/', async function (request, response) {
   response.redirect(303, '/')
 })
 
+// 1. De GET route: Toont alleen het inlogformulier
+app.get('/student/:id', function (request, response) {
+  // We sturen de bezoeker naar de login-pagina en geven het ID mee
+  response.render('login.liquid', { id: request.params.id });
+});
 
-// Maak een GET route voor een detailpagina met een route parameter, id
-// Zie de documentatie van Express voor meer info: https://expressjs.com/en/guide/routing.html#route-parameters
-app.get('/student/:id', async function (request, response) {
-  // Gebruik de request parameter id en haal de juiste persoon uit de WHOIS API op
-  const personDetailResponse = await fetch('https://fdnd.directus.app/items/person/' + request.params.id)
-  // En haal daarvan de JSON op
-  const personDetailResponseJSON = await personDetailResponse.json()
+// 2. De POST route: Controleert het wachtwoord
+app.post('/student/:id', async function (request, response) {
+  const password = request.body.password; // Dit komt uit het formulier
+  const secret = process.env.STUDENT_PASSWORD; // Dit staat veilig op Render
 
-  // Render student.liquid uit de views map en geef de opgehaalde data mee als variable, genaamd person
-  // Geef ook de eerder opgehaalde squad data mee aan de view
-  response.render('student.liquid', { person: personDetailResponseJSON.data, squads: squadResponseJSON.data })
-})
+  if (password === secret) {
+    // Wachtwoord is goed! Haal nu de data op
+    const personDetailResponse = await fetch('https://fdnd.directus.app/items/person/' + request.params.id);
+    const personDetailResponseJSON = await personDetailResponse.json();
+
+    // Toon de studentenpagina
+    response.render('student.liquid', { 
+      person: personDetailResponseJSON.data, 
+      squads: squadResponseJSON.data 
+    });
+  } else {
+    // Wachtwoord is fout
+    response.send('Fout wachtwoord! <a href="/student/' + request.params.id + '">Probeer opnieuw</a>');
+  }
+});
+
+
+// // Maak een GET route voor een detailpagina met een route parameter, id
+// // Zie de documentatie van Express voor meer info: https://expressjs.com/en/guide/routing.html#route-parameters
+// app.get('/student/:id', async function (request, response) {
+//   // Gebruik de request parameter id en haal de juiste persoon uit de WHOIS API op
+// if (request.query.password === process.env.STUDENT_PASSWORD) {
+    
+//     // KLOPT HET? Voer dan de normale code uit
+//     const personDetailResponse = await fetch('https://fdnd.directus.app/items/person/' + request.params.id)
+//     const personDetailResponseJSON = await personDetailResponse.json()
+
+//     response.render('student.liquid', { 
+//       person: personDetailResponseJSON.data, 
+//       squads: squadResponseJSON.data 
+//     })
+
+//   } else {
+//     // KLOPT HET NIET? Stuur ze weg of laat een foutmelding zien
+//     response.send('Fout wachtwoord! Je hebt geen toegang tot deze student-pagina.')
+//   }
+// })
 
 app.get('/lente', async function (request, response) {
 

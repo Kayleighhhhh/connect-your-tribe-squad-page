@@ -17,7 +17,14 @@
     <a href="{% if indexxed %}/jongnoud{% elsif jongnoud %}/oudnjong{% elsif oudnjong %}/{% endif %}" class="control">sort jong naar oud</a>
   {% endif %}
 
-  <div class="control">zoeken</div>
+  <form action="/" class="control">
+    <label>
+      Zoeken
+      <input type="search" name="zoekterm">
+    </label>
+    <button type="submit">Zoeken maar!</button>
+  </form>
+
   <details class="control"><summary>filter op seizoen</summary>
     <a href="/lente">Lente</a>
     <a href="/zomer">Zomer</a>
