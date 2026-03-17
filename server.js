@@ -194,11 +194,9 @@ app.get('/student/:id', function (request, response) {
 
 // 2. De POST route: Controleert het wachtwoord
 app.post('/student/:id', async function (request, response) {
-  const password = request.body.password; // Dit komt uit het formulier
-  const secret = process.env.STUDENT_PASSWORD; // Dit staat veilig op Render
 
-  if (password === secret) {
-    // Wachtwoord is goed! Haal nu de data op
+  if (request.body.password === process.env.STUDENT_PASSWORD) {
+    // Haal de data op
     const personDetailResponse = await fetch('https://fdnd.directus.app/items/person/' + request.params.id);
     const personDetailResponseJSON = await personDetailResponse.json();
 
